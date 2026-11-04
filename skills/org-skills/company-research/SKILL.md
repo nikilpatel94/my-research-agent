@@ -7,11 +7,19 @@ description: Research an organisation from its website URL and name using web se
 
 ## Instructions
 
-### 1. Confirm identity from the website
-Use `fetch_url` on the URL provided. If the homepage is thin, fetch one more page
-(About, Services, Careers or Academy/Training) that the homepage links to.
-Note: what the organisation does, who it serves, sectors mentioned, any size claims.
-If the site does not match the name given, say so in the description.
+### 1. Verify the name matches the URL (gate: do this before any research)
+Make one `fetch_url` call on the URL provided and nothing else. Check the page title,
+headings, footer and any legal or copyright line for the organisation name.
+Treat brand vs legal names, abbreviations, and a parent company or group as a match.
+
+- **Match**: continue to step 2. Keep what the page already told you
+  (what they do, who they serve, sectors, size claims) so you don't fetch it again.
+- **Fetch failed or page too thin to judge**: run one `web_search` for
+  `{name} {domain}`. Continue only if the results tie that domain to the organisation.
+- **Mismatch** (the site belongs to a different organisation, or nothing links it
+  to the name): stop here. Do no further searches. Skip to the output skill and return
+  `description` stating the mismatch and what the site actually belongs to,
+  with `employee_strength` and `main_sector` set to "Not found".
 
 ### 2. Search the web (budget: 6 searches maximum)
 Run distinct queries, replacing `{name}` with the organisation name:
